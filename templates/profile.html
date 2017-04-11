@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+<ul>
+  <li>Username: {{ user.username }}</li>
+    <li>Bio: {{ user.profile.bio }}</li>
+  <li>Location: {{ user.profile.location }}</li>
+  <li>Birth Date: {{ user.profile.birth_date }}</li>
+</ul>
+
+<a class="btn btn-info" role="button" href="{% url 'userprofile:edit' user.profile.id %}">Edit</a>
+
+{% endblock %}
