@@ -9,36 +9,37 @@
 <a class="btn btn-info add" role="button" href="{% url 'artists:create' %}">+ Add Artist</a></br></br>
 
 <div class="card-deck"> 
-{% if object_list %}
+  {% if object_list %}
     {% for artist in object_list %}
-     <script type="text/javascript">
+      <script type="text/javascript">
         var myLatLng = new google.maps.LatLng(43.677023, -79.466782);
-
-    marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-    });
-    google.maps.event.addListener(marker, 'click', (function(marker) {
-      return function() {
-          var infowindow = new google.maps.InfoWindow({
-          content: `<div class='card-block'><h4 class='card-title'>{{artist.name}}</h1><p class='card-text'>{{artist.instrument}}</p></div><a class='btn btn-info' href='{% url "artists:detail" artist.id %}'>Details</a>`
+        marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
         });
-            infowindow.open(map, marker);
-          }
-        })(marker));
-    </script>
-    <div class="card">
-    <div class="card-block">
-      <h4 class="card-title">{{ artist.name }}</h4>
-      <h6 class="card-subtitle mb-2 text-muted">{{ artist.instrument }}</h6>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a class="btn btn-info" href="{% url 'artists:detail' artist.id %}">Details</a>
-    </div>
-  </div>
+        google.maps.event.addListener(marker, 'click', (function(marker) {
+          return function() {
+              var infowindow = new google.maps.InfoWindow({
+              content: `<div class='card-block'><h4 class='card-title'>{{artist.name}}</h1><p class='card-text'>{{artist.instrument}}</p></div><a class='btn btn-info' href='{% url "artists:detail" artist.id %}'>Details</a>`
+            });
+                infowindow.open(map, marker);
+              }
+            })(marker));
+      </script>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">{{ artist.name }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">{{ artist.instrument }}</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a class="btn btn-info" href="{% url 'artists:detail' artist.id %}">Details</a>
+          </div>
+        </div>
+      </div>
     {% endfor %}
-{% else %}
+  {% else %}
     <p>No artists are available.</p>
-{% endif %}
+  {% endif %}
 </div>
 
 {% endblock %}

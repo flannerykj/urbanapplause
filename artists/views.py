@@ -21,7 +21,6 @@ class IndexView(ListView):
         context['object_list'] = Artist.objects.all()
         context['page_title'] = "Artists"
         context['model_type'] = "Artist"
-        context['timedelta'] = datetime.datetime.now() - self.datetime
         return context
 
 class DetailView(generic.DetailView):
@@ -34,6 +33,16 @@ class UpdateArtist(UpdateView):
     form_class = ArtistForm
     def get_success_url(self):
         return reverse_lazy('artists:detail', kwargs={'pk': self.object.id})
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(UpdateArtist, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['page_title'] = "Edit Artist"
+        context['model_type'] = "Artist"
+        context['cancel_url'] = reverse_lazy('artists:detail', kwargs={'pk': self.object.id})
+        context['submit_text'] = "Save"
+        return context
+
 
 class CreateArtist(CreateView):
     model = Artist
@@ -46,8 +55,27 @@ class CreateArtist(CreateView):
         return HttpResponseRedirect(self.get_success_url())
     def get_success_url(self):
         return '/artists/'
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CreateArtist, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['page_title'] = "Add Artist"
+        context['model_type'] = "Artist"
+        context['cancel_url'] = "/artists"
+        context['submit_text'] = "Save"
+        return context
 
 class DeleteArtist(DeleteView):
     model = Artist
     success_url = '/artists/'
     template_name = 'edit.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(DeleteArtist, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['page_title'] = "Delete Artist?"
+        context['model_type'] = "Artist"
+        context['cancel_url'] = "/artists"
+        context['submit_text'] = "Delete"
+        return context

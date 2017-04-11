@@ -31,10 +31,23 @@ class AddSighting(CreateView):
     model = Sighting
     form_class = SightingForm
     template_name = 'edit.html'
+    def get_success_url(self):
+        return '/sightings/'
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.author = self.request.user
         obj.save()        
         return HttpResponseRedirect(self.get_success_url())
-    def get_success_url(self):
-        return '/sightings'
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(AddSighting, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['page_title'] = "Add Sighting"
+        context['model_type'] = "Sighting"
+        context['cancel_url'] = "/sightings"
+        context['submit_text'] = "Save"
+        return context
+
+
+
+

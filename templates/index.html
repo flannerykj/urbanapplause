@@ -31,31 +31,29 @@
     </script>
 
 <div class="list-view"> 
-    <script> 
-      var LatLngList = [];
-      var Names = [];
-      var Datetimes = []; 
-    </script>
-{% if sighting_list %}
+  <script> 
+    var LatLngList = [];
+    var Names = [];
+    var Datetimes = []; 
+  </script>
+  {% if sighting_list %}
     {% for sighting in sighting_list %}
-     <script type="text/javascript">
-      LatLngList.push([{{sighting.location.latitude}}, {{sighting.location.longitude}}]);
-      Datetimes.push('{{sighting.datetime}}');
-      Names.push('{{sighting.artist.name}}');
-     </script>
-    <div class="card">
-	  <div class="card-block">
-	    <h4 class="card-title"><a href='{% url "artists:detail" sighting.artist.id %}'>{{ sighting.datetime }}{{timedelta}}{{ sighting.artist.name }}</h4></a>
-	    <h6 class="card-subtitle mb-2 text-muted">{{ sighting.location }}</h6>
-	    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-	    <a class="btn btn-info" href="#">Details</a>
-	  </div>
-	</div>
+       <script type="text/javascript">
+        LatLngList.push([{{sighting.location.latitude}}, {{sighting.location.longitude}}]);
+        Datetimes.push('{{sighting.datetime}}');
+        Names.push('{{sighting.artist.name}}');
+       </script>
+       <div class="card">
+	       <div class="card-block">
+  	       <h4 class="card-title"><a href='{% url "artists:detail" sighting.artist.id %}'>{{ sighting.datetime }}{{timedelta}}{{ sighting.artist.name }}</h4></a>
+  	       <h6 class="card-subtitle mb-2 text-muted">{{ sighting.location }}</h6>
+  	       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    	  </div>
+    	</div>
     {% endfor %}
-{% else %}
+  {% else %}
     <p>None available.</p>
-{% endif %}
-<script>  </script>
+  {% endif %}
 </div>
 <script>
 	function toggleView() {
@@ -66,32 +64,31 @@
     loadMarkers(Names, Datetimes, LatLngList);
 	}
   function loadMarkers(Names, Datetimes, LatLngList) {
-      initMap(LatLngList);
-      for (var i = 0; i < LatLngList.length; i++) {
-        var myLatLng = new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1]);
-        marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-        });
-        var contentString = `<div class='card-block'><h4 class='card-title'>`+Names[i]+`</h1><p class='card-text'>`+Datetimes[i]+`</p></div>`
-        google.maps.event.addListener(marker, 'click', (function(marker) {
-          return function() {
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            infowindow.open(map, marker);
-          }
-        })(marker));
-       }
-     var bounds = new google.maps.LatLngBounds();
-       for (var i = 0; i < LatLngList.length; i++) {
-         bounds.extend(new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1])); 
-       }
-        map.setCenter(bounds.getCenter());
-        map.fitBounds(bounds); 
+    initMap(LatLngList);
+    for (var i = 0; i < LatLngList.length; i++) {
+      var myLatLng = new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1]);
+      marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+      var contentString = `<div class='card-block'><h4 class='card-title'>`+Names[i]+`</h1><p class='card-text'>`+Datetimes[i]+`</p></div>`
+      google.maps.event.addListener(marker, 'click', (function(marker) {
+        return function() {
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          infowindow.open(map, marker);
+        }
+      })(marker));
+     }
+    var bounds = new google.maps.LatLngBounds();
+     for (var i = 0; i < LatLngList.length; i++) {
+       bounds.extend(new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1])); 
+     }
+      map.setCenter(bounds.getCenter());
+      map.fitBounds(bounds); 
    }
 	$('.map-view').toggle();
-
  </script>
 
 {% endblock %}

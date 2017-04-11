@@ -8,9 +8,5 @@ class SightingAdmin(admin.ModelAdmin):
         (None,               {'fields': ['location']}),
     ]
     list_display = ('artist', 'author', 'location', 'datetime')
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'author', None) is None:
-            obj.author = request.user
-        obj.save()
 
 admin.site.register(Sighting, SightingAdmin)

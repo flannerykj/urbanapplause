@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %} Create Artist {% endblock %}
+{% block title %} {{ page_title }} {% endblock %}
 {% block content %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.media }}
     {{ form.as_p }}
-    <a class="btn btn-info" role="button" href="#">Cancel</a>
-    <input class="btn btn-info" type="submit" value="Save" />
+    <a class="btn btn-info" role="button" href="{{ cancel_url }}">Cancel</a>
+    <input class="btn btn-info" type="submit" value="{{ submit_text }}"/>
 </form>
 
 {% endblock %}
