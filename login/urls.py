@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^profile/', include('userprofile.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^sightings/', include('sightings.urls')),
+    url(r'^applause/', include('applause.urls')),
     url(r'^artists/', include('artists.urls')),
+    url(r'^talent/', include('talent.urls')),
 ]

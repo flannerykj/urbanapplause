@@ -1,15 +1,16 @@
 from django.contrib import admin
-from .models import Sighting
+from .models import Applause
 
 # Register your models here.
-class SightingAdmin(admin.ModelAdmin):
+class ApplauseAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['talent']}),
         (None,               {'fields': ['location']}),
+        (None,               {'fields': ['comments']})
     ]
-    list_display = ('talent', 'author', 'location', 'datetime')
+    list_display = ('talent', 'comments', 'user', 'location', 'pub_date')
     def save_model(self, request, obj, form, change):
-    	obj.author = request.user
+    	obj.user = request.user
         obj.save()
 
-admin.site.register(Sighting, SightingAdmin)
+admin.site.register(Applause, ApplauseAdmin)

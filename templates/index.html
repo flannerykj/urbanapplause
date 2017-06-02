@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
-
+     
 {% block title %} {{page_title}} {% endblock %}
-
 {% block content %}
-
-
 
 <button onclick="toggleView()" class="btn btn-active list-toggle">List View</button> 
 <button onclick="toggleView()" class="btn btn-info map-toggle">Map View</button> 
-<a class="btn btn-info add" role="button" href="{% url 'sightings:add' %}">+ Add {{model_type}}</a></br></br>
 
+<div class="dropdown add">
+  <a class="btn btn-info dropdown-toggle" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    +Applaud
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'applause:add' 'musician' %}">Musician</a>
+    <a class="dropdown-item" href="#">Graffitist</a>
+  </div>
+</div>
+</br></br>
 <div class="map-view"> 
 	<div id="map"></div>
 </div>
@@ -34,21 +40,26 @@
   <script> 
     var LatLngList = [];
     var Names = [];
+    var Links = []; 
     var Datetimes = []; 
   </script>
-  {% if sighting_list %}
-    {% for sighting in sighting_list %}
+  {% if object_list %}
+    {% for post in object_list %}
        <script type="text/javascript">
-        LatLngList.push([{{sighting.location.latitude}}, {{sighting.location.longitude}}]);
-        Datetimes.push('{{sighting.datetime}}');
-        Names.push('{{sighting.artist.name}}');
+        LatLngList.push([{{post.location.latitude}}, {{post.location.longitude}}]);
+        Datetimes.push('{{post.pub_date}}');
+        Names.push('{{post.name}}');
+        Links.push({{post.get_type}}/{{post.id}}); 
        </script>
        <div class="card">
 	       <div class="card-block">
-  	       <h4 class="card-title"><a href='{% url "artists:detail" sighting.artist.id %}'>{{ sighting.datetime }}{{timedelta}}{{ sighting.artist.name }}</h4></a>
-  	       <h6 class="card-subtitle mb-2 text-muted">{{ sighting.location }}</h6>
-  	       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  	       <h4 class="card-title"><a href='{{post.get_type}}/{{post.id}}'>{{ post.name }}</h4></a>
+  	       <h6 class="card-subtitle mb-2 text-muted">{{ post.location }}</h6>
+  	       <p class="card-text">
+              {{ post.instrument }}
+              {{ post.comments }}</p>
     	  </div>
+        <div class="card-footer"> {{ post.pub_date }}{{timedelta}} </div>
     	</div>
     {% endfor %}
   {% else %}
@@ -61,9 +72,9 @@
 		$( ".list-toggle").toggleClass( "btn-info", "btn-active" );
 		$( ".map-toggle").toggleClass( "btn-info", "btn-active" );
 		google.maps.event.trigger(map, 'resize');
-    loadMarkers(Names, Datetimes, LatLngList);
+    loadMarkers(Names, Links, Datetimes, LatLngList);
 	}
-  function loadMarkers(Names, Datetimes, LatLngList) {
+  function loadMarkers(Names, Links, Datetimes, LatLngList) {
     initMap(LatLngList);
     for (var i = 0; i < LatLngList.length; i++) {
       var myLatLng = new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1]);
@@ -71,7 +82,7 @@
         position: myLatLng,
         map: map,
       });
-      var contentString = `<div class='card-block'><h4 class='card-title'>`+Names[i]+`</h1><p class='card-text'>`+Datetimes[i]+`</p></div>`
+      var contentString = `<div class='card-block'><a href="`+Links[i]+`"><h4 class='card-title'>`+Names[i]+`</h4></a><p class='card-text'>`+Datetimes[i]+`</p></div>`
       google.maps.event.addListener(marker, 'click', (function(marker) {
         return function() {
           var infowindow = new google.maps.InfoWindow({

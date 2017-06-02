@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} Talent --> {{page_title}}{% endblock %}
+
+{% block content %}
+
+
+
+<a class="btn btn-info add" role="button" href="/talent/{{talent_type|lower}}s/create">+ Add {{talent_type}}</a></br></br>
+
+<div class="card-deck"> 
+  {% if object_list %}
+    {% for person in object_list %}
+      <script type="text/javascript">
+        var myLatLng = new google.maps.LatLng(43.677023, -79.466782);
+        marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+        });
+        google.maps.event.addListener(marker, 'click', (function(marker) {
+          return function() {
+              var infowindow = new google.maps.InfoWindow({
+              content: `<div class='card-block'><h4 class='card-title'>{{person.name}}</h1><p class='card-text'>instrument</p></div><a class='btn btn-info' href='/talent/{{person.get_type}}s/{{person.id}}'>Details</a>`
+            });
+                infowindow.open(map, marker);
+              }
+            })(marker));
+      </script>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">{{ person.name }}, <span class="text-muted">{{person.get_type}}</span></h4>
+              {% if person.metadata %}
+                {% for field, values in person.metadata.items %}
+                  <strong>{{field}}:</strong>
+                  {% for tag in values %}
+                    {{tag}},
+                  {% endfor %}
+                  </br> 
+                {% endfor %}
+              {% endif %} 
+            <a class="btn btn-info" href="/talent/{{person.get_type}}s/{{person.id}}">Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No talent are available.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

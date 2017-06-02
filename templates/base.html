@@ -7,8 +7,8 @@
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-  
-
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://use.fontawesome.com/699f3abe90.js"></script>
   <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" />
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -36,10 +36,43 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'sightings:index' %}">Sightings</a>
+              <a class="nav-link" href="{% url 'applause:index' %}">Applause</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'artists:index' %}">Artists</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Talent
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="{% url 'talent:musicians' %}">
+                    <span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-18-music.png' %}"/></span> 
+                    <span class="dropdown-item-text"> Musicians </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'talent:artists' %}">
+                    <span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-373-spray.png' %}"/></span> 
+                    <span class="dropdown-item-text">Graffitists</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"><span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-276-fast-food.png' %}"/></span> 
+                  <span class="dropdown-item-text">Food Vendors</span></a>
+                </li>
+                <li> 
+                  <a class="dropdown-item" href="#"><span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-355-vases.png' %}"/></span> 
+                  <span class="dropdown-item-text">Craftsmen</span>
+                  </a>
+                </li>
+                <li><a class="dropdown-item" href="#">
+                  <span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-671-theater.png' %}"/></span>  
+                  <span class="dropdown-item-text">Performance Artists</span>
+                </a></li>
+                <li><a class="dropdown-item" href="#">
+                  <span class="menu-icon-wrap"><img class="menu-icon" src="{% static '/images/glyphicons/glyphicons-356-bullhorn.png' %}"/></span> 
+                  <span class="dropdown-item-text">Demonstrators</span>
+                </a></li>
+              </ul>
             </li>
           </ul>
 
@@ -68,6 +101,7 @@
     </nav>
 
     <div class="container page-content"> 
+      <div class="breadcrumbs"> {% block breadcrumbs %}{% endblock %}</div>
       <h1 class="page-title"> {% block title %}  {% endblock %}</h1>
       {% block content %}
       {% endblock %}

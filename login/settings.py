@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userprofile.apps.UserprofileConfig',
     'artists.apps.ArtistsConfig',
+    'talent.apps.TalentConfig',
     'sightings.apps.SightingsConfig',
+    'applause.apps.ApplauseConfig',
     'geoposition',
+    'taggit',
 ]
 GEOPOSITION_MAP_OPTIONS = {
     'minZoom': 3,
@@ -50,6 +53,8 @@ GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBCGCPIth4aCl4JQPeFixLzWMA2VWwcXec'
 GEOPOSITION_MARKER_OPTIONS = {
          'cursor': 'move'
      }
+     
+TAGGIT_CASE_INSENSITIVE = True
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -118,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'EST'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

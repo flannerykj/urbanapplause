@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %} {{ artist.name }} {% endblock %}
+{% block breadcrumbs %} 
+<a href="/talent/{{talent.get_type}}s"> < Back to {{talent.get_type|capfirst}}s</a>
+{% endblock %}
+
+{% block title %}{{talent.name}}{% endblock %}
 
 {% block content %}
+<a class="btn btn-info" role="button" href="/talent/{{talent.get_type}}s/{{talent.id}}/edit">Edit</a>
+<a class="btn btn-info" role="button" href="/talent/{{talent.get_type}}s/{{talent.id}}/delete">Delete</a>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<h2> Artist Information </h2>
+<h2>Info</h2>
 <table>
-	<tr> <th>Name:</th> <td>{{ artist.name }}</td></tr>
-	<tr><th>Instrument:</th> <td>Instrument</td></tr>
-	<tr><th>Date Created:</th> <td>{{ artist.pub_date }}</td></tr>
-  <tr><th>Created by:</th> <td>{{ artist.author }}</td></tr>
+	<tr> <th>Name:</th> <td>{{ talent.name }}</td></tr>
+	              {% if talent.metadata %}
+                {% for field, values in talent.metadata.items %}
+                  <tr> 
+                    <th>{{field|capfirst}}:</th>
+                    {% for tag in values %}
+                    <td>{{tag}}, </td> 
+                    {% endfor %}
+                  </tr> 
+                {% endfor %}
+              {% endif %}
+	<tr><th>Date Created:</th><td>{{talent.pub_date}}</td></tr>
+  <tr><th>Created by:</th><td>{{talent.author}}</td></tr>
 </table>
 <h2> Sightings </h2>
 <div id="map"></div>
@@ -81,7 +96,4 @@
 	  	<script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCGCPIth4aCl4JQPeFixLzWMA2VWwcXec&callback=initMap"></script>
 </br>
-<a class="btn btn-info" role="button" href="{% url 'artists:index' %}"> < Back to Artists</a>
-<a class="btn btn-info" role="button" href="{% url 'artists:edit' artist.id %}">Edit</a>
-<a class="btn btn-info" role="button" href="{% url 'artists:delete' artist.id %}">Delete</a>
 {% endblock %}

@@ -57,6 +57,35 @@ body {
 .card {
   margin-bottom: 20px;
 }
+h1 {
+  padding-top: 20px;
+}
+h2 {
+  padding-top: 30px;
+}
+
+/* MENU
+==============*/ 
+.dropdown-menu {
+  width: 250px;
+}
+.dropdown-item {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.dropdown-item-text {
+  position: absolute;
+  left: 60px;
+}
+.menu-icon-wrap {
+  height: 10px !important;
+  width: 25px;
+}
+.menu-icon {
+  display: inline-block;
+  opacity: 0.7;
+}
 
 /* ARTISTS VIEW
 =========== */

@@ -11,7 +11,7 @@ from django.utils.timezone import utc
 
 # Create your models here.
 class Sighting(models.Model):
-	artist = models.ForeignKey('artists.Artist')
+	talent = models.ForeignKey('talent.Talent')
 	location = GeopositionField()
 	datetime = models.DateTimeField(auto_now_add=True, blank=True)
 	author = models.ForeignKey(User)
@@ -23,3 +23,6 @@ class Sighting(models.Model):
 	        now = datetime.datetime.utcnow().replace(tzinfo=utc)
 	        timediff = now - self.time_posted
 	        return timediff.total_seconds()
+	@property
+	def get_type(self):
+		return self.talent.get_type
