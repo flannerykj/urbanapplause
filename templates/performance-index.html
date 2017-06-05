@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+     
+{% block title %}{% endblock %}
+{% block content %}
+
+<button onclick="toggleView()" class="btn btn-active list-toggle">List View</button> 
+<button onclick="toggleView()" class="btn btn-info map-toggle">Map View</button> 
+
+  <a class="btn btn-info" href="{% url 'performances:add' %}">
+    + Performance
+  </a>
+
+<div class="map-view"> 
+  <div id="map"></div>
+</div>
+
+    <script>
+      var map;
+      function initMap(LatLngList) {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: new google.maps.LatLng(43.677023, -79.466782),
+          mapTypeId: 'terrain'
+        });
+       }
+     </script>
+
+     <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCGCPIth4aCl4JQPeFixLzWMA2VWwcXec&callback=initMap">
+    </script>
+
+<div class="list-view"> 
+  <script> 
+    var LatLngList = [];
+    var Names = [];
+    var Links = []; 
+    var Datetimes = []; 
+  </script>
+  {% if object_list %}
+    {% for post in object_list %}
+       <script type="text/javascript">
+        LatLngList.push([{{post.location.latitude}}, {{post.location.longitude}}]);
+        Datetimes.push('{{post.pub_date}}');
+        Names.push('{{post.name}}');
+        Links.push({{post.id}}); 
+       </script>
+       <div class="card">
+         <div class="card-block">
+           <h4 class="card-title">
+            {% for musician in post.get_musicians %}<a href='#'>{{ musician }}, </a>{% endfor %}
+          </h4>
+           <h6 class="card-subtitle mb-2 text-muted">{{ post.get_address }}</h6>
+           <div id="{{post.id}}_applause_message" class="applause_error"></div>
+           <img style="width: 40px" src="{% static '/images/glyphicons/applause3.png' %}"/> 
+           <span id="{{post.id}}_applause_count" class="applause_count">{{post.total_audience}}</span>
+           {% if post.applauded %}
+              <button class="btn btn-info applaud" id="{{ post.id }}">Applaud</button>
+           {% else %}
+              <button class="btn applaud" id="{{ post.id }}">You've Applauded</button>
+           {% endif %}
+        </div>
+        <div class="card-footer"> Started: {{ post.start_time|timesince }} ago </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>None available.</p>
+  {% endif %}
+</div>
+<script>
+  function toggleView() {
+    $('.map-view, .list-view').toggle();
+    $( ".list-toggle").toggleClass( "btn-info", "btn-active" );
+    $( ".map-toggle").toggleClass( "btn-info", "btn-active" );
+    google.maps.event.trigger(map, 'resize');
+    loadMarkers(Names, Links, Datetimes, LatLngList);
+  }
+  function loadMarkers(Names, Links, Datetimes, LatLngList) {
+    initMap(LatLngList);
+    for (var i = 0; i < LatLngList.length; i++) {
+      var myLatLng = new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1]);
+      marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+      });
+      var contentString = `<div class='card-block'><a href="`+Links[i]+`"><h4 class='card-title'>`+Names[i]+`</h4></a><p class='card-text'>`+Datetimes[i]+`</p></div>`
+      google.maps.event.addListener(marker, 'click', (function(marker) {
+        return function() {
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          infowindow.open(map, marker);
+        }
+      })(marker));
+     }
+    var bounds = new google.maps.LatLngBounds();
+     for (var i = 0; i < LatLngList.length; i++) {
+       bounds.extend(new google.maps.LatLng(LatLngList[i][0], LatLngList[i][1])); 
+     }
+      map.setCenter(bounds.getCenter());
+      map.fitBounds(bounds); 
+   }
+  $('.map-view').toggle();
+ </script>
+
+ <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+           <script>
+            $('.applaud').click(function(){
+                  $.ajax({
+                           type: "POST",
+                           url: "{% url 'performances:applaud' %}",
+                           data: {'id': $(this).attr('id'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                           dataType: "json",
+                           success: function(response) {
+                                  $('#'+response.post_id+"_applause_count").html(response.audience_count)
+                                  //$('#'+response.post_id+"_applause_message").html(response.message)
+                                  if (response.added=='true') {
+                                    $('#'+response.post_id).html("You've Applauded")
+                                    $('#'+response.post_id).removeClass('btn-info')
+                                  } else {
+                                    $('#'+response.post_id).html("Applaud")
+                                    $('#'+response.post_id).addClass('btn-info')
+                                }
+                            },
+                            error: function(rs, e) {
+                                   //$('#'+response.post_id+"_applause_message").html("error")
+                                   //alert(rs.responseText);
+                            }
+                      }); 
+                })
+            </script>
+
+{% endblock %}

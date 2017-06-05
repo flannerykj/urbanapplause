@@ -10,9 +10,7 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^profile/', include('userprofile.urls')),
+    url(r'^performances/', include('performances.urls')),
+    url(r'^musicians/', include('musicians.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^sightings/', include('sightings.urls')),
-    url(r'^applause/', include('applause.urls')),
-    url(r'^artists/', include('artists.urls')),
-    url(r'^talent/', include('talent.urls')),
 ]

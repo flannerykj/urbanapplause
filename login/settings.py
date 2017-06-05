@@ -36,13 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.gis',
     'django.contrib.staticfiles',
     'userprofile.apps.UserprofileConfig',
-    'artists.apps.ArtistsConfig',
-    'talent.apps.TalentConfig',
-    'sightings.apps.SightingsConfig',
-    'applause.apps.ApplauseConfig',
+    'musicians.apps.MusiciansConfig',
+    'performances.apps.PerformancesConfig',
     'geoposition',
+    'mapwidgets',
     'taggit',
 ]
 GEOPOSITION_MAP_OPTIONS = {
@@ -93,8 +93,8 @@ WSGI_APPLICATION = 'login.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'urbanapplause',
     }
 }
 
@@ -144,3 +144,14 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_REDIRECT_URL = 'home'
+
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15),
+        ("mapCenterLocationName", "toronto"),
+        ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'canada'}}),
+        ("markerFitZoom", 12),
+    ),
+    "GOOGLE_MAP_API_KEY": "AIzaSyBCGCPIth4aCl4JQPeFixLzWMA2VWwcXec"
+}
+

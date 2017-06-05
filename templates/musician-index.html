@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %} Talent --> {{page_title}}{% endblock %}
+{% block title %} Musicians{% endblock %}
 
 {% block content %}
 
 
 
-<a class="btn btn-info add" role="button" href="/talent/{{talent_type|lower}}s/create">+ Add {{talent_type}}</a></br></br>
+<a class="btn btn-info add" role="button" href="{% url 'musicians:add' %}">+ Add Musician</a></br></br>
 
 <div class="card-deck"> 
   {% if object_list %}
@@ -39,7 +39,7 @@
                   </br> 
                 {% endfor %}
               {% endif %} 
-            <a class="btn btn-info" href="/talent/{{person.get_type}}s/{{person.id}}">Details</a>
+            <a class="btn btn-info" href="{% url 'musicians:detail' person.id%}">Details</a>
           </div>
         </div>
       </div>
