@@ -87,9 +87,67 @@ h2 {
   opacity: 0.7;
 }
 
+/* PAGE GENERAL
+==============*/ 
+.section-header {
+  margin-top: 60px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  float: left;
+  display: block;
+  position: absolute;
+  bottom: 0;
+}
+.section-actions {
+  float: right;
+  display: block;
+  position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+/* PERFORMANCES
+==============*/ 
+
+.applause_count {
+  padding-right: 20px;
+}
+
+.musician-tag {
+  border: 1px solid black;
+  padding: 10px;
+  background-color: #eeeeee;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.performance-performers{
+  margin-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+
 /* ARTISTS VIEW
 =========== */
-       #map {
-        height: 400px;
-        width: 100%;
-       }
+   #map {
+    height: 400px;
+    width: 100%;
+   }
+
+/* USER PROFILE
+==============*/ 
+
+.profile_pic {
+ width: 100px;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile_pic img {
+  max-width: 100%;
+}

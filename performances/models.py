@@ -9,6 +9,7 @@ from django.contrib.gis.db import models
 from geopy.geocoders import GoogleV3
 from musicians.models import Musician
 from django.contrib.auth.models import User
+from geopy.geocoders import Nominatim
 
 class InstrumentTag(TaggedItemBase):
     content_object = models.ForeignKey('Participation')
@@ -20,25 +21,21 @@ class GenreTag(TaggedItemBase):
 class Performance(models.Model): 
 	musicians = models.ManyToManyField(Musician, through='Participation', null=True)
 	audience = models.ManyToManyField(User, through='Applause', null=True)
-	start_time = models.DateTimeField(auto_now_add=True)
-	end_time = models.DateTimeField(null=True)
+	start_time = models.DateTimeField(auto_now_add=True, editable=True)
+	end_time = models.DateTimeField(default=(datetime.now()+timedelta(hours=4)), null=True)
 	location = models.PointField()
 	genres = TaggableManager(through=GenreTag, related_name='genres', verbose_name='genres')
 	def get_musicians(self):
-		return map(str, self.musicians.all())
-	def get_address(self):
-		base = "http://maps.googleapis.com/maps/api/geocode/json?"
-		params = "latlng={lat},{lon}&sensor=true".format(lat=self.location.y,lon=self.location.x)
-		url = "{base}{params}".format(base=base, params=params)
-		response = requests.get(url)
-		return response.json()['results'][0].get('formatted_address')
-	def __repr__(self):
-		return str(self.id)
-	def _str_(self): 
-		return "performance"
+		return self.participation_set.all()
 	@property
 	def total_audience(self):
 		return self.audience.count()
+	def get_address(self):
+		geolocator = Nominatim()
+		latlong = [str(self.location.y), str(self.location.x)]
+		point = ", ".join(latlong)
+		location = geolocator.reverse(point)
+		return location.address
 
 class Participation(models.Model): 
 	musician = models.ForeignKey(Musician)

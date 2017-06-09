@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^profile/', include('userprofile.urls')),
     url(r'^performances/', include('performances.urls')),
     url(r'^musicians/', include('musicians.urls')),
+    url(r'^blog/', include('blog.urls')),
     url(r'^admin/', admin.site.urls),
 ]

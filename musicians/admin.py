@@ -6,6 +6,7 @@ from performances.admin import ParticipationInline
 class MusicianAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['name']}),
+        (None,               {'fields': ['user']}),
     ]
     inlines = (ParticipationInline,)
 

@@ -5,6 +5,7 @@ from django.views import generic
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from .models import Musician
+from performances.models import Performance
 from .forms import MusicianForm
 # Create your views here.
 
@@ -18,6 +19,7 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['talent'] = self.object
+        context['performances'] = Performance.objects.filter(musicians__id=self.object.id)
         return context
 
 class AddView(CreateView):

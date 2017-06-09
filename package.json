@@ -1,0 +1,30 @@
+{
+  "name": "urbanapplause",
+  "version": "1.0.0",
+  "description": "Example created for the blog post [How to Use Django's Built-in Login System][blog-post] at [simpleisbetterthancomplex.com][blog].",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flannj/urbanapplause.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flannj/urbanapplause/issues"
+  },
+  "homepage": "https://github.com/flannj/urbanapplause#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-react": "^6.24.1",
+    "jquery": "^3.2.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.1.0-beta.22",
+    "webpack-bundle-tracker": "^0.2.0"
+  }
+}
