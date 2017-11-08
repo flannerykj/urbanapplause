@@ -5,3 +5,7 @@ Track talent (musicians, artists, performers etc) across your city. Find talent 
 
 ## Stack
 - Django
+
+
+## Features
+- User Authentication
